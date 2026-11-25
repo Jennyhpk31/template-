@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English A2 - Present Perfect Interactive Lesson</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: #333;
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    overflow: hidden;
+  }
+  header {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+    padding: 30px;
+    text-align: center;
+  }
+  header h1 { font-size: 2.2em; margin-bottom: 8px; }
+  header p { font-size: 1.1em; opacity: 0.95; }
+  .score-bar {
+    background: #f0f4ff;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #e0e6ff;
+  }
+  .score-bar span { font-weight: bold; color: #4a5fc1; }
+  .reset-btn {
+    background: #ff6b6b;
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+  .reset-btn:hover { background: #ee5a5a; transform: scale(1.05); }
+  section {
+    padding: 30px;
+    border-bottom: 1px solid #eee;
+  }
+  section h2 {
+    color: #4a5fc1;
+    margin-bottom: 15px;
+    font-size: 1.5em;
+  }
+  .theory-box {
+    background: #f7f9ff;
+    border-left: 5px solid #4facfe;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    line-height: 1.7;
+  }
+  .theory-box code {
+    background: #fff;
+    padding: 2px 8px;
+    border-radius: 4px;
+    color: #d63384;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+  }
+  .theory-box ul { margin-left: 20px; margin-top: 10px; }
+  .theory-box li { margin: 5px 0; }
+  .activity {
+    background: #fafbff;
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 15px;
+    border: 2px solid #e0e6ff;
+  }
+  .question {
+    margin-bottom: 15px;
+    padding: 12px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  }
+  .question p { font-size: 1.05em; margin-bottom: 10px; }
+  .options { display: flex; flex-wrap: wrap; gap: 10px; }
+  .option-btn {
+    background: white;
+    border: 2px solid #4facfe;
+    color: #4facfe;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.95em;
+    transition: 0.2s;
+    font-weight: 500;
+  }
+  .option-btn:hover:not(:disabled) { background: #4facfe; color: white; }
+  .option-btn.correct { background: #28a745; color: white; border-color: #28a745; }
+  .option-btn.wrong { background: #dc3545; color: white; border-color: #dc3545; }
+  .option-btn:disabled { cursor: not-allowed; opacity: 0.7; }
+  .fill-input {
+    border: 2px dashed #4facfe;
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 1em;
+    width: 140px;
+    text-align: center;
+    background: #fff;
+    outline: none;
+  }
+  .fill-input:focus { border-style: solid; background: #f0f7ff; }
+  .check-btn {
+    background: #4facfe;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 10px;
+    transition: 0.3s;
+  }
+  .check-btn:hover { background: #3d9ae0; }
+  .feedback {
+    margin-top: 8px;
+    font-weight: bold;
+    font-size: 0.95em;
+  }
+  .feedback.ok { color: #28a745; }
+  .feedback.no { color: #dc3545; }
+  .match-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .match-item {
+    background: white;
+    border: 2px solid #4facfe;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: 0.2s;
+  }
+  .match-item.selected { background: #4facfe; color: white; }
+  .match-item.matched { background: #28a745; color: white; cursor: default; border-color: #28a745; }
+  .match-item.wrong-match { background: #dc3545; color: white; }
+  .words-box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 10px 0;
+    min-height: 40px;
+    padding: 10px;
+    background: white;
+    border-radius: 8px;
+    border: 2px dashed #ccc;
+  }
+  .word-chip {
+    background: #4facfe;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 16px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: 0.2s;
+  }
+  .word-chip:hover { background: #3d9ae0; }
+  .answer-area {
+    min-height: 50px;
+    padding: 10px;
+    background: #fff;
+    border: 2px solid #28a745;
+    border-radius: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .final-message {
+    text-align: center;
+    padding: 30px;
+    font-size: 1.3em;
+    color: #4a5fc1;
+    font-weight: bold;
+    display: none;
+  }
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.6em; }
+    .match-grid { grid-template-columns: 1fr; }
+    section { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>📘 Present Perfect</h1>
+    <p>English A2 · Interactive Grammar Lesson</p>
+  </header>
+
+  <div class="score-bar">
+    <div>Score: <span id="score">0</span> / <span id="total">0</span></div>
+    <button class="reset-btn" onclick="resetAll()">🔄 Reset</button>
+  </div>
+
+  <!-- THEORY -->
+  <section>
+    <h2>📖 Grammar Rules</h2>
+    <div class="theory-box">
+      <p><strong>Form:</strong> <code>Subject + have/has + past participle (V3)</code></p>
+      <ul>
+        <li>I / You / We / They → <code>have</code></li>
+        <li>He / She / It → <code>has</code></li>
+      </ul>
+      <p style="margin-top:10px;"><strong>Examples:</strong></p>
+      <ul>
+        <li>✅ I <code>have visited</code> Paris.</li>
+        <li>✅ She <code>has eaten</code> lunch.</li>
+        <li>❌ They <code>haven't finished</code> yet.</li>
+      </ul>
+      <p style="margin-top:10px;"><strong>Key words:</strong> <code>already</code>, <code>yet</code>, <code>just</code>, <code>ever</code>, <code>never</code>, <code>for</code>, <code>since</code></p>
+      <p style="margin-top:10px;"><strong>Use:</strong> for experiences, recent actions, actions that started in the past and continue now.</p>
+    </div>
+  </section>
+
+  <!-- ACTIVITY 1: Multiple Choice -->
+  <section>
+    <h2>🎯 Activity 1 — Choose the correct form</h2>
+    <div class="activity" id="act1"></div>
+  </section>
+
+  <!-- ACTIVITY 2: Fill in the blanks -->
+  <section>
+    <h2>✍️ Activity 2 — Fill in the blanks</h2>
+    <div class="activity" id="act2"></div>
+  </section>
+
+  <!-- ACTIVITY 3: For / Since / Ever / Never / Just / Already / Yet -->
+  <section>
+    <h2>🔑 Activity 3 — Choose the correct keyword</h2>
+    <div class="activity" id="act3"></div>
+  </section>
+
+  <!-- ACTIVITY 4: Build the sentence -->
+  <section>
+    <h2>🧩 Activity 4 — Build the sentence</h2>
+    <p style="margin-bottom:10px;">Click the words in the correct order:</p>
+    <div class="activity" id="act4"></div>
+  </section>
+
+  <div class="final-message" id="finalMsg"></div>
+</div>
+
+<script>
+  let score = 0;
+  let total = 0;
+
+  // ---------- Activity 1: Multiple Choice ----------
+  const act1Data = [
+    { q: "I _____ to London three times.", options: ["have been", "has been", "am being"], answer: 0 },
+    { q: "She _____ her homework already.", options: ["have finished", "has finished", "has finish"], answer: 1 },
+    { q: "They _____ that movie yet.", options: ["hasn't watched", "haven't watched", "haven't watch"], answer: 1 },
+    { q: "_____ you ever eaten sushi?", options: ["Has", "Have", "Did"], answer: 1 },
+    { q: "He _____ a new car.", options: ["have bought", "has buyed", "has bought"], answer: 2 }
+  ];
+
+  function buildAct1() {
+    const container = document.getElementById('act1');
+    total += act1Data.length;
+    act1Data.forEach((item, idx) => {
+      const div = document.createElement('div');
+      div.className = 'question';
+      div.innerHTML = `<p>${idx+1}. ${item.q}</p><div class="options"></div><div class="feedback"></div>`;
+      const opts = div.querySelector('.options');
+      item.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = opt;
+        btn.onclick = () => {
+          const buttons = opts.querySelectorAll('button');
+          buttons.forEach(b => b.disabled = true);
+          if (i === item.answer) {
+            btn.classList.add('correct');
+            addScore();
+            div.querySelector('.feedback').textContent = '✅ Correct!';
+            div.querySelector('.feedback').className = 'feedback ok';
+          } else {
+            btn.classList.add('wrong');
+            buttons[item.answer].classList.add('correct');
+            div.querySelector('.feedback').textContent = `❌ Correct answer: ${item.options[item.answer]}`;
+            div.querySelector('.feedback').className = 'feedback no';
+          }
+          checkFinal();
+        };
+        opts.appendChild(btn);
+      });
+      container.appendChild(div);
+    });
+  }
+
+  // ---------- Activity 2: Fill in the blanks ----------
+  const act2Data = [
+    { sentence: "We ___ (visit) our grandparents.", answer: "have visited" },
+    { sentence: "My brother ___ (lose) his keys.", answer: "has lost" },
+    { sentence: "You ___ (not / see) this film.", answer: "haven't seen" },
+    { sentence: "She ___ (write) three emails today.", answer: "has written" }
+  ];
+
+  function buildAct2() {
+    const container = document.getElementById('act2');
+    total += act2Data.length;
+    act2Data.forEach((item, idx) => {
+      const div = document.createElement('div');
+      div.className = 'question';
+      const parts = item.sentence.split('___');
+      div.innerHTML = `
+        <p>${idx+1}. ${parts[0]}<input type="text" class="fill-input" data-idx="${idx}" placeholder="..."><span>${parts[1] || ''}</span></p>
+        <button class="check-btn" onclick="checkFill(${idx})">Check</button>
+        <div class="feedback"></div>
+      `;
+      container.appendChild(div);
+    });
+  }
+
+  function checkFill(idx) {
+    const input = document.querySelector(`input[data-idx="${idx}"]`);
+    const feedback = input.parentElement.parentElement.querySelector('.feedback');
+    const userAns = input.value.trim().toLowerCase();
+    const correct = act2Data[idx].answer.toLowerCase();
+    if (userAns === correct) {
+      feedback.textContent = '✅ Correct!';
+      feedback.className = 'feedback ok';
+      input.disabled = true;
+      input.parentElement.querySelector('button').disabled = true;
+      addScore();
+    } else {
+      feedback.textContent = `❌ Try again. Correct: ${act2Data[idx].answer}`;
+      feedback.className = 'feedback no';
+    }
+    checkFinal();
+  }
+
+  // ---------- Activity 3: Keywords ----------
+  const act3Data = [
+    { q: "I have _____ finished my dinner. (a moment ago)", options: ["just", "yet", "since"], answer: 0 },
+    { q: "She hasn't called me _____ .", options: ["already", "yet", "since"], answer: 1 },
+    { q: "Have you _____ been to Italy?", options: ["never", "ever", "since"], answer: 1 },
+    { q: "I have lived here _____ 2015.", options: ["for", "since", "already"], answer: 1 },
+    { q: "We have known each other _____ ten years.", options: ["since", "for", "just"], answer: 1 }
+  ];
+
+  function buildAct3() {
+    const container = document.getElementById('act3');
+    total += act3Data.length;
+    act3Data.forEach((item, idx) => {
+      const div = document.createElement('div');
+      div.className = 'question';
+      div.innerHTML = `<p>${idx+1}. ${item.q}</p><div class="options"></div><div class="feedback"></div>`;
+      const opts = div.querySelector('.options');
+      item.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = opt;
+        btn.onclick = () => {
+          const buttons = opts.querySelectorAll('button');
+          buttons.forEach(b => b.disabled = true);
+          if (i === item.answer) {
+            btn.classList.add('correct');
+            addScore();
+            div.querySelector('.feedback').textContent = '✅ Correct!';
+            div.querySelector('.feedback').className = 'feedback ok';
+          } else {
+            btn.classList.add('wrong');
+            buttons[item.answer].classList.add('correct');
+            div.querySelector('.feedback').textContent = `❌ Correct answer: ${item.options[item.answer]}`;
+            div.querySelector('.feedback').className = 'feedback no';
+          }
+          checkFinal();
+        };
+        opts.appendChild(btn);
+      });
+      container.appendChild(div);
+    });
+  }
+
+  // ---------- Activity 4: Build sentence ----------
+  const act4Data = [
+    { words: ["have", "I", "Paris", "visited"], answer: "I have visited Paris" },
+    { words: ["has", "homework", "She", "finished", "her"], answer: "She has finished her homework" },
+    { words: ["been", "to", "They", "Japan", "have"], answer: "They have been to Japan" }
+  ];
+
+  function buildAct4() {
+    const container = document.getElementById('act4');
+    total += act4Data.length;
+    act4Data.forEach((item, idx) => {
+      const div = document.createElement('div');
+      div.className = 'question';
+      const shuffled = [...item.words].sort(() => Math.random() - 0.5);
+      div.innerHTML = `
+        <p>${idx+1}. Build the sentence:</p>
+        <div class="words-box" data-idx="${idx}"></div>
+        <div class="answer-area" data-idx="${idx}"></div>
+        <button class="check-btn" onclick="checkBuild(${idx})">Check</button>
+        <div class="feedback"></div>
+      `;
+      const wordsBox = div.querySelector('.words-box');
+      shuffled.forEach(w => {
+        const chip = document.createElement('span');
+        chip.className = 'word-chip';
+        chip.textContent = w;
+        chip.onclick = () => {
+          const answerArea = div.querySelector('.answer-area');
+          answerArea.appendChild(chip);
+        };
+        wordsBox.appendChild(chip);
+      });
+      div.querySelector('.answer-area').onclick = (e) => {
+        if (e.target.classList.contains('word-chip')) {
+          div.querySelector('.words-box').appendChild(e.target);
+        }
+      };
+      container.appendChild(div);
+    });
+  }
+
+  function checkBuild(idx) {
+    const answerArea = document.querySelector(`.answer-area[data-idx="${idx}"]`);
+    const feedback = answerArea.parentElement.querySelector('.feedback');
+    const chips = answerArea.querySelectorAll('.word-chip');
+    const userSentence = Array.from(chips).map(c => c.textContent).join(' ');
+    if (userSentence === act4Data[idx].answer) {
+      feedback.textContent = '✅ Perfect!';
+      feedback.className = 'feedback ok';
+      answerArea.parentElement.querySelector('button').disabled = true;
+      addScore();
+    } else {
+      feedback.textContent = `❌ Try again. Correct: "${act4Data[idx].answer}"`;
+      feedback.className = 'feedback no';
+    }
+    checkFinal();
+  }
+
+  // ---------- Score ----------
+  function addScore() {
+    score++;
+    document.getElementById('score').textContent = score;
+  }
+
+  function checkFinal() {
+    if (score === total) {
+      const msg = document.getElementById('finalMsg');
+      msg.textContent = `🎉 Congratulations! You scored ${score}/${total}! Excellent work!`;
+      msg.style.display = 'block';
+    }
+  }
+
+  function resetAll() {
+    score = 0;
+    document.getElementById('score').textContent = 0;
+    document.getElementById('finalMsg').style.display = 'none';
+    document.getElementById('act1').innerHTML = '';
+    document.getElementById('act2').innerHTML = '';
+    document.getElementById('act3').innerHTML = '';
+    document.getElementById('act4').innerHTML = '';
+    total = 0;
+    buildAct1();
+    buildAct2();
+    buildAct3();
+    buildAct4();
+    document.getElementById('total').textContent = total;
+  }
+
+  // Init
+  buildAct1();
+  buildAct2();
+  buildAct3();
+  buildAct4();
+  document.getElementById('total').textContent = total;
+</script>
+</body>
+</html>
